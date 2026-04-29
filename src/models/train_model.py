@@ -1,8 +1,9 @@
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error,mean_squared_error
 import pandas as pd
 import joblib
+import numpy as np
 import os
 
 def train_model(df):
@@ -25,15 +26,26 @@ def train_model(df):
     # Model
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
+    # BEFORE (likely)
+    model.fit(df['sales'])
+
+    # AFTER (correct)
+    split_date = "2023-01-01"
+
+    train = df[df['date'] < split_date]
+    test = df[df['date'] >= split_date]
     save_model(model)
     
     # Predictions
-    preds = model.predict(X_test)
+    predictions = model.predict(len(test))
 
-    # Evaluation
-    mae = mean_absolute_error(y_test, preds)
+    mae = mean_absolute_error(test['sales'], predictions)
+    rmse = np.sqrt(mean_squared_error(test['sales'], predictions))
 
-    return model, mae, X_test, y_test, preds
+    print("MAE:", mae)
+    print("RMSE:", rmse)
+
+    return model, mae, X_test, y_test
 
 def save_model(model):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))

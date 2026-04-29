@@ -257,7 +257,7 @@ elif page == "📈 Forecast":
 
                 # ✅ Remove duplicates
                 df = df.drop_duplicates(subset='datetime')
-
+                
         except Exception as e:
             st.error(f"Error fetching forecast: {e}")
             st.stop()
