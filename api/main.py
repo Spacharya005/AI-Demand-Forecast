@@ -5,6 +5,7 @@ from src.models.insights import generate_insights
 from src.features.feature_engineering import preprocess_data
 from src.models.predict import load_model, predict
 from src.models.anomaly import detect_anomalies
+from statsmodels.tsa.arima.model import ARIMA
 
 app = FastAPI()
 
@@ -66,3 +67,18 @@ def anomalies():
     anomalies_df = detect_anomalies(df)
 
     return anomalies_df[['datetime', 'transaction_qty']].to_dict(orient="records")
+
+def forecast_model(df):
+
+    df = df.sort_values('date')
+
+    split = int(len(df) * 0.8)
+    train = df[:split]
+    test = df[split:]
+
+    model = ARIMA(train['transaction_qty'], order=(5,1,0))
+    model_fit = model.fit()
+
+    predictions = model_fit.forecast(steps=len(test))
+
+    return train, test, predictions

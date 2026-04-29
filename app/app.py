@@ -207,7 +207,18 @@ if page == "🏠 Overview":
         try:
             res = requests.get(f"{API_URL}/data")
             df = pd.DataFrame(res.json())
+            df['date'] = pd.to_datetime(df['date'])
+            df = df.sort_values('date')
 
+            split_date = df['date'].quantile(0.8)
+
+            train = df[df['date'] < split_date]
+            test = df[df['date'] >= split_date]
+
+            st.session_state.train = train
+            st.session_state.test = test
+
+            st.success(f"Train size: {len(train)}, Test size: {len(test)}")
             # Save in session
             st.session_state.df = df
 
@@ -261,6 +272,34 @@ elif page == "📈 Forecast":
         except Exception as e:
             st.error(f"Error fetching forecast: {e}")
             st.stop()
+
+        # 👉 Only if test data exists
+        if "test" in st.session_state:
+            test = st.session_state.test
+
+            # Align lengths
+            min_len = min(len(test), len(df))
+
+            actual = test['transaction_qty'].values[:min_len]
+            pred = df['prediction'].values[:min_len]
+
+            from sklearn.metrics import mean_absolute_error, mean_squared_error
+            import numpy as np
+
+            mae = mean_absolute_error(actual, pred)
+            rmse = np.sqrt(mean_squared_error(actual, pred))
+
+            st.markdown("### 📊 Model Performance")
+            col1, col2 = st.columns(2)
+            col1.metric("MAE", round(mae, 2))
+            col2.metric("RMSE", round(rmse, 2))
+
+        peak_row = df.loc[df['prediction'].idxmax()]
+
+        st.markdown("### 🔥 Peak Demand Insight")
+        st.warning(f"Peak Time: {peak_row['datetime']}")
+        st.write(f"Expected Demand: {round(peak_row['prediction'], 2)}")
+
         fig = px.line(df, x='datetime', y=['prediction', 'rolling_mean'],
                     title="📊 Forecast vs Trend")
 
@@ -289,7 +328,10 @@ elif page == "📈 Forecast":
         )
 
         st.plotly_chart(fig, use_container_width=True)
+        st.markdown("### 📅 Forecast Summary")
 
+        st.write(f"Forecast Range: {df['datetime'].min()} → {df['datetime'].max()}")
+        st.write(f"Average Demand: {round(df['prediction'].mean(), 2)}")
 # =========================================================
 # 🧠 INSIGHTS TAB
 # =========================================================
@@ -330,9 +372,6 @@ elif page == "🚨 Anomalies":
         else:
             st.success("No anomalies detected 🎉")
 
-        fig.update_traces(marker=dict(color="red", size=8))
-
-        st.plotly_chart(fig, use_container_width=True)
 # =========================================================
 # ☕ Footer
 # =========================================================
