@@ -1,39 +1,67 @@
-1. Project Title
-AI Demand Forecasting & Business Intelligence System
-2. Problem Statement
+# ☕ AI Demand Forecasting Dashboard
 
-Businesses struggle with demand prediction and inventory planning.
+A data-driven forecasting system designed to predict beverage demand and support proactive decision-making for coffee businesses. This project combines machine learning, time-series analysis, and interactive visualization using Streamlit and FastAPI.
 
-3. Solution
+---
 
-Built an end-to-end system that forecasts demand, detects anomalies, and provides actionable insights.
+## 🚀 Project Overview
 
-4. Tech Stack
-Python
-PostgreSQL
-FastAPI
-Streamlit
-Machine Learning (Random Forest, etc.)
-5. Architecture
-Streamlit → FastAPI → ML Model → PostgreSQL
-6. Features
-Demand forecasting
-Business insights
-API endpoints
-Database integration
-7. Screenshots (VERY IMPORTANT)
+This project aims to move from **reactive operations → proactive planning** by forecasting demand patterns and identifying anomalies in real time.
 
-👉 Add:
+It provides:
+- 📈 Demand forecasting
+- 🧠 Business insights
+- 🚨 Anomaly detection
+- 📊 Interactive dashboard
 
-Streamlit UI
-API docs (/docs)
-🔥 5. Resume Points (use THIS)
+---
 
-Put this in your resume:
+## 🧩 Features
 
-💼 Project: AI Demand Forecasting System
-Built an end-to-end ML system for demand forecasting using Python and Scikit-learn
-Designed REST APIs using FastAPI for real-time predictions and insights
-Integrated PostgreSQL database for scalable data storage and retrieval
-Developed an interactive dashboard using Streamlit for visualization
-Implemented business insights engine for peak demand detection and recommendations
+### 🔹 1. Overview Dashboard
+- API health monitoring
+- Data preview
+- Hourly demand visualization
+
+### 🔹 2. Forecasting Module
+- Time-series predictions
+- Rolling trend analysis
+- Interactive Plotly charts
+
+### 🔹 3. Insights Engine
+- Automatically generated business insights
+- Actionable recommendations
+
+### 🔹 4. Anomaly Detection
+- Identifies unusual demand spikes/drops
+- Visual trend analysis
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** Streamlit  
+- **Backend:** FastAPI  
+- **Data Processing:** Pandas, NumPy  
+- **Visualization:** Plotly  
+- **Machine Learning:** Scikit-learn / Time-Series Models (ARIMA / Prophet)  
+- **Version Control:** Git & GitHub  
+
+---
+
+## 📂 Project Structure
+
+AI-Demand-Forecasting/
+--├── app/ # Streamlit frontend
+--│ └── app.py
+--│
+--├── api/ # FastAPI backend
+--│ └── main.py
+--│
+--├── data/ # Dataset files
+--│
+--├── models/ # Trained models
+--├── src
+--│ └── main.py
+├── requirements.txt
+├── README.md
