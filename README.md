@@ -147,7 +147,7 @@ streamlit run app/app.py
 ## 📧 Contact
 
 **Name:** Shramanth P Acharya
-**Email:** [hareesh.upl@gmail.com](mailto:shramanthpa@gmail.com)
+**Email:** [shramanthpa@gmail.com](mailto:shramanthpa@gmail.com)
 **GitHub:** https://github.com/Spacharya005
 
 ---
